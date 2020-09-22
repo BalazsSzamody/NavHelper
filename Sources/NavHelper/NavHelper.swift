@@ -1,8 +1,13 @@
 import UIKit
-
+/// Use ViewController class name as the **Storyboard ID**.
+///
+/// If for some reason it's not possible (e.g. Multiple instances of the class are
+/// in the same Storyboard, implement `customStoryboardId`
 public protocol ViewControllerDetails {
     var storyboard: String { get }
     var type: UIViewController.Type? { get }
+    /// Implement this if the class name can't be used as the **Storyboard ID**
+    var customStoryboardId: String? { get }
 }
 
 extension ViewControllerDetails {
@@ -10,9 +15,13 @@ extension ViewControllerDetails {
         guard let type = type else {
             return ""
         }
-        return String(describing: type)
+        return customStoryboardId ?? String(describing: type)
             .components(separatedBy: ".")
             .last ?? ""
+    }
+    
+    public var customStoryboardId: String? {
+        nil
     }
 }
 
